@@ -59,6 +59,9 @@ module.exports = {
         ]
     },
     devServer: {
+      host: "0.0.0.0",
+      port: process.env.PORT || 8080,
+      public: process.env.PORT || null,
       historyApiFallback: true,
       compress: true,
       contentBase: path.resolve(__dirname, './dist'),
@@ -97,9 +100,9 @@ module.exports = {
       new BundleVisualizerPlugin(),
       new BrowserSyncPlugin(
       {
-        host: process.env.IP || "localhost",
-        port: process.env.HOST || "8080",
-        proxy: 'http://localhost:8080'
+        host: "0.0.0.0",
+        port: process.env.PORT || "8080",
+        proxy: `http://0.0.0.0:${process.env.PORT}`
       },
       {
         reload: false
