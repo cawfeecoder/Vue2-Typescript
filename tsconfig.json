@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "target": "es5",
+        "lib": ["es5", "dom", "es2015.promise"],
+        "allowJs": true,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "pretty": true,
+        "jsx": "preserve",
+        "removeComments": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "types": [
+            "vue",
+            "node"
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    }
+}
