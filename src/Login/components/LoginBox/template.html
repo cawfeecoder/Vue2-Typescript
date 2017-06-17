@@ -1,6 +1,26 @@
 <div :class="$style.loginPage">
     <div :class="$style.loginBox">
-      <input :class="$style.usernameBox" placeholder="Username"></input>
-      <input :class="$style.passwordBox" type="password" placeholder="Password"></input>
+      <div :class="$style.icecreamIcon">
+          <transition-group name="fade">
+            <img key="default" v-if="!loginPending && !user" :class="$style.icecreamImg" src="assets/images/icecream_icon.svg"></img>
+            <div key="pending" v-if="loginPending && !user" v-show="!user||loginPending" :class="[$style.loginImg, $style.pending]" :style="{ visiblity: loginPending ? '' : 'hidden' }"><i class="fa fa-lock fa-5x"></i></div>
+            <div key="finished" v-if="user && !loginPending" :class="$style.loggedinImg"><i class="fa fa-unlock fa-5x"></i></div>
+          </transition-group>
+      </div>
+      <div :class="$style.loginInputs">
+
+        <span ref="username" :class="$style.usernameBoxContainer" :style="{ boxShadow: userBoxActive ? '0px 0px 10px 0px #90CAF9' : '' }">
+          <i :class="$style.usernameBoxIcon" class="fa fa-user fa-2x"></i>
+          <input :class="$style.usernameBox" @focus="inputFocus('username')" @blur="inputBlur('username')" placeholder="Username"></input>
+        </span>
+        <span :class="$style.passwordBoxContainer" :style="{ boxShadow: passwordBoxActive ? '0px 0px 10px 0px #90CAF9' : '' }">
+          <i :class="$style.passwordBoxIcon" class="fa fa-lock fa-2x"></i>
+          <input :class="$style.passwordBox" @focus="inputFocus('password')" @blur="inputBlur('password')" type="password" placeholder="Password"></input>
+        </span>
+      </div>
+      <div :class="$style.loginButtons">
+        <button :class=$style.smartLoginButton><i class="fa fa-id-badge fa-2x" :class="$style.smartLoginIcon"></i>Smart Login</button>
+        <button :class=$style.loginButton @click="logIn()"><i class="fa fa-sign-in fa-2x" :class="$style.loginIcon"></i>Login</button>
+      </div>
     </div>
 </div>

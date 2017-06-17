@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const WebPackDevServer = require('webpack-dev-server');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -10,6 +11,7 @@ module.exports = {
     context: __dirname + '/src',
     entry: {
       app: [
+        'webpack-dev-server/client?http://localhost:8080',
         './index.ts'
       ]
     },
@@ -20,7 +22,7 @@ module.exports = {
     resolve : {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.css', '.vue', '.html'],
         alias: {
-          'vue$': 'vue/dist/vue.common.js' // 'vue/dist/vue.common.js' for webpack 1
+          'vue$': 'vue/dist/vue.common.js'
         }
     },
 
@@ -49,21 +51,26 @@ module.exports = {
             },
             {
               test: /\.html$/,
-              use: [{loader: 'vue-template-loader', options: {hmr: false} }],
+              use: [{loader: 'vue-template-loader', options: {hmr: true} }],
               exclude: '/src/index.html'
             },
             {
               test: /\.(eot|svg|ttf|otf|woff|woff2)$/,
               use: 'file-loader?public/fonts/[name].[ext]'
+            },
+            {
+              test: /\.svg$/,
+              use: ['svg=inline-loader'],
+              exclude: '/node_modules/'
             }
         ]
     },
     devServer: {
-      host: "0.0.0.0",
-      port: process.env.PORT || 8080,
-      public: process.env.PORT || null,
       historyApiFallback: true,
       compress: true,
+      hot: true,
+      https: true,
+      watchContentBase: true,
       contentBase: path.resolve(__dirname, './dist'),
       watchOptions: {
         aggregateTimeout: 300,
@@ -73,7 +80,7 @@ module.exports = {
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: '"production"'
+          NODE_ENV: '"development"'
         }
       }),
       new webpack.optimize.CommonsChunkPlugin({
@@ -95,17 +102,19 @@ module.exports = {
       }),
       new CopyWebpackPlugin([
            { from: 'index.html', to: './dist/' },
-           { from: 'style.css', to: './dist/assets/styles' }
+           { from: 'style.css', to: './dist/assets/styles' },
+           { from: '../node_modules/font-awesome/css/font-awesome.min.css', to: './dist/assets/styles'},
+           { from: '../node_modules/font-awesome/fonts', to: './dist/assets/fonts'}
       ]),
       new BundleVisualizerPlugin(),
       new BrowserSyncPlugin(
       {
-        host: "0.0.0.0",
-        port: process.env.PORT || "8080",
-        proxy: `http://0.0.0.0:${process.env.PORT}`
+        host: "localhost",
+        port: "8081",
+        proxy: "https://localhost:8080"
       },
       {
-        reload: false
+        reload: true
       })
     ],
     devtool: 'source-map'
