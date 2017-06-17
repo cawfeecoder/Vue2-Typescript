@@ -1,5 +1,8 @@
 yarn.lock*
-dist/*
+dist/assets/js/*
+dist/assets/fonts/*
+dist/assets/styles/*
+dist/assets/index.html
 node_modules/*
 package-lock.json*
 stats.html
